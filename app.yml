@@ -1,0 +1,51 @@
+version: '3'
+services:
+
+
+    # db
+    permissionmanagement-db:
+        image: mysql:8
+        container_name: permissionmanagement-db
+        volumes:
+            - db-data:/var/lib/mysql
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ROOT_PASSWORD=ykb
+            - MYSQL_DATABASE=permissionmanagementdb
+
+        ports:
+            - 3307:3306
+        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+
+        networks: # Networks to join (Services on the same network can communicate with each other using their name)
+            - ykb-network
+
+    # App backend service
+    permissionmanagement-app:
+        # Configuration for building the docker image for the backend service
+        build:
+            context: .  # Use an image built from the specified dockerfile in the `polling-app-server` directory.
+            dockerfile: Dockerfile
+        ports:
+            - "8085:8080" # Forward the exposed port 8085 on the container to port 8080 on the host machine
+        restart: on-failure
+        depends_on:
+            - permissionmanagement-db # This service depends on mysql. Start that first.
+        environment: # Pass environment variables to the service
+            SPRING_DATASOURCE_URL: jdbc:mysql://permissionmanagement-db:3306/permissionmanagementdb?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+            SPRING_DATASOURCE_USERNAME: root
+            SPRING_DATASOURCE_PASSWORD: ykb
+        networks: # Networks to join (Services on the same network can communicate with each other using their name)
+            - ykb-network
+
+
+
+# Volumes
+volumes:
+    db-data:
+
+# Networks to be created to facilitate communication between containers
+
+networks:
+    ykb-network:
+        driver: bridge

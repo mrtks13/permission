@@ -1,0 +1,1 @@
+INSERT INTO permissionmanagementdb.permission_request (id, description, holiday_start_date, status, working_start_date, employee_id, created_at, updated_at, version, employee, number_of_request_permision_day) VALUES (1, null, '2020-01-11', 0, '2020-01-14', 1, null, null, null, null, null);
