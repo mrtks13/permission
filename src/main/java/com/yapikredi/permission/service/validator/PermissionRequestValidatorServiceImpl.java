@@ -36,7 +36,6 @@ public class PermissionRequestValidatorServiceImpl implements PermissionRequestV
     @Override
     public void validatePermissionRequest(PermissionRequest permissionRequest) {
 
-
         int numberOfDeservePermissionDay = permissionYearService.getNumberOfDayByBetweenDate(permissionRequest.getEmployee().getStartHiringDate(), permissionRequest.getHolidayStartDate());
 
         int numberOfUsedPermissionDay = permissionHistoryService.getNumberOfUsedPermission(permissionRequest.getEmployee().getId());

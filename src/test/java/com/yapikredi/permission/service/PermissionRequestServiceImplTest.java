@@ -9,10 +9,7 @@ import com.yapikredi.permission.service.validator.PermissionRequestValidatorServ
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
@@ -21,8 +18,7 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 class PermissionRequestServiceImplTest {
@@ -74,20 +70,21 @@ class PermissionRequestServiceImplTest {
 
         doNothing().when(permissionRequestValidatorService).validatePermissionRequestInput(any(PermissionRequestDto.class));
         when(employeeService.findById(employeeId)).thenReturn(employee);
-        when(employeeService.findById(employeeId)).thenReturn(employee);
         doNothing().when(permissionRequestValidatorService).validatePermissionRequest(any(PermissionRequest.class));
         when(holidayCalculateService.totalBusinessDaysBetween(permissionStartDate,permissionEndDate)).thenReturn(2);
         //when
 
         PermissionResponseDto permissionResponseDto = permissionRequestService.createPermissionRequest(permissionRequestDto);
 
+        verify(employeeService,times(1)).findById(employeeId);
+
+        verify(permissionRequestValidatorService,atLeastOnce()).validatePermissionRequestInput(any(PermissionRequestDto.class));
+        verify(permissionRequestValidatorService,times(1)).validatePermissionRequest(any(PermissionRequest.class));
+        verify(holidayCalculateService,times(1)).totalBusinessDaysBetween(permissionStartDate,permissionEndDate);
+
         //then
         assertEquals(2,permissionResponseDto.getNumberOfRequestPermissionDay());
 
     }
 
-
-    @Test
-    void saveAction() {
-    }
 }

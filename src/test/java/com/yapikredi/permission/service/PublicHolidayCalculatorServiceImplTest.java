@@ -2,7 +2,6 @@ package com.yapikredi.permission.service;
 
 import com.yapikredi.permission.domain.entity.PublicHoliday;
 import com.yapikredi.permission.repository.HolidayRepository;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,15 +12,9 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-
-import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PublicHolidayCalculatorServiceImplTest {
@@ -80,7 +73,7 @@ public class PublicHolidayCalculatorServiceImplTest {
         int result = holidayCalculateService.totalBusinessDaysBetween(startDate, endDate);
         //then
 
-        System.out.println();
+        Mockito.verify(holidayRepository,Mockito.times(1)).findHolidaysByDateBetween(startDate, endDate);
         Assert.assertEquals(4, result);
 
     }

@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.Assert.*;
 
 public class PermissionRequestControllerTest extends AbstractTest {
+
     @Override
     @Before
     public void setUp() {

@@ -52,8 +52,11 @@ class PermissionRequestServiceImplT {
         permissionRequestDto.setHolidayStartDate(permissionStartDate);
         permissionRequestDto.setWorkingStartDate(permissionEndDate);
 
+        //when
         PermissionResponseDto permissionResponseDto= permissionRequestService.createPermissionRequest(permissionRequestDto);
-       Assert.assertEquals(2,permissionResponseDto.getNumberOfRequestPermissionDay().intValue());
+
+        //then
+        Assert.assertEquals(2,permissionResponseDto.getNumberOfRequestPermissionDay().intValue());
 
 
     }
